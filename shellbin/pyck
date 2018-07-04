@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+
+setup_environment(){
+    PYTHON_PATH=${HOME}/.local/bin
+###    IGNORE_ERRORS=E221,E701,E202
+                    }
+
+main(){
+    setup_environment
+    which $PYTHON_PATH/pyflakes > /dev/null || exit 254
+    which $PYTHON_PATH/pycodestyle > /dev/null || exit 254
+    $PYTHON_PATH/pyflakes $*
+    $PYTHON_PATH/pycodestyle --ignore=$IGNORE_ERRORS --repeat $*
+    exit 0
+}
+
+main $*
