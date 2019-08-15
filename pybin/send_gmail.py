@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
+
+# formal lib
 import argparse
-from gmail import AdminGmail
-from gmail import ContFpathMimetype
 import glob
 import re
 import os
+# mylib
+from gmail import AdminGmail
+from gmail import ContFpathMimetype
 
 
 def print_global_varibales():
@@ -27,7 +30,7 @@ def walk_for_match_file(root, re_pat):
             yield fpath
 
 
-if __name__ == "__main__":
+def make_arg_parser():
     msg = "it send email with a pdf to a kindle account."
     parser = argparse.ArgumentParser(description=msg,
                                      fromfile_prefix_chars="@")
@@ -56,12 +59,17 @@ if __name__ == "__main__":
     hmsg = "it needs MIME_DICT using extension and get MIME type."
     parser.add_argument("--assign_mime", nargs="*",
                         type=str, default=None, help=hmsg)
+    return parser
+    
+
+if __name__ == "__main__":
+    parser = make_arg_parser()
     args = parser.parse_args()
     # necessay arguments
     PDF_PATHS = args.pdf_paths
     GMAIL_PASSWD = args.gmail_passwd
     GMAIL_ACCOUNT = args.gmail_account
-    TO_KINDLE_ADDRESS = args.gmail_account
+    TO_KINDLE_ADDRESS = args.to_kindle_address
     # optinal argument
     BCC = args.bcc
     CC = args.cc
@@ -77,7 +85,6 @@ if __name__ == "__main__":
             raise AssertionError("you must set ROOT argument")
         PDF_PATHS = list(walk_for_match_file(ROOT, WALK_PAT))
     print_global_varibales()
-    import ipdb; ipdb.set_trace()
     # === main part ==
     admin_gmail_ins = AdminGmail(GMAIL_ACCOUNT, GMAIL_PASSWD)
     cont_fpath_mimtype = ContFpathMimetype(PDF_PATHS)

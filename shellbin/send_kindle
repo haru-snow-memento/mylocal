@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+send_kindle_bin=/Users/haruyuki/.mylocal/pybin/send_gmail.py
+SEND_KINDLE_CONFIG=/Users/haruyuki/.__setting/send_input.txt
+${send_kindle_bin} ${*} "@${SEND_KINDLE_CONFIG}"
