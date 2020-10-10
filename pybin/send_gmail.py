@@ -89,13 +89,11 @@ if __name__ == "__main__":
     admin_gmail_ins = AdminGmail(GMAIL_ACCOUNT, GMAIL_PASSWD)
     cont_fpath_mimtype = ContFpathMimetype(PDF_PATHS)
     admin_gmail_ins.set_origcont_with_path_myme(
-                                        cont_fpath_mimtype
-                                               )
+                                    cont_fpath_mimtype)
     admin_gmail_ins.set_attachment_mimes_li()
     admin_gmail_ins.set_msg_with_attachment(
                                          GMAIL_ACCOUNT,
                                          TO_KINDLE_ADDRESS,
                                          CC, BCC,
-                                         SUBJECT, BODY
-                                           )
+                                         SUBJECT, BODY)
     admin_gmail_ins.send()

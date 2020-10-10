@@ -50,7 +50,7 @@ class AdminGmail(object):
         # 4
         if not hasattr(self, "cont_fpath_myme_ins"):
             raise AttributeError("in advence, you must use "
-                                 "set_attachment_mimes_li")
+                                 "set_origcont_with_path_myme")
         for fpath, mimetype in self.cont_fpath_myme_ins:
             self.add_attachment_mime(fpath, mimetype)
 

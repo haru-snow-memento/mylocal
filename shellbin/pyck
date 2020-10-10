@@ -8,10 +8,10 @@ setup_environment(){
 
 main(){
     setup_environment
-    which $PYTHON_PATH/pyflakes > /dev/null || exit 254
-    which $PYTHON_PATH/pycodestyle > /dev/null || exit 254
-    $PYTHON_PATH/pyflakes $*
-    $PYTHON_PATH/pycodestyle --ignore=$IGNORE_ERRORS --repeat $*
+    which pyflakes > /dev/null || exit 254
+    which pycodestyle > /dev/null || exit 254
+    pyflakes $*
+    pycodestyle --ignore=$IGNORE_ERRORS --repeat $*
     exit 0
 }
 
