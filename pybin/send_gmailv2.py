@@ -40,7 +40,7 @@ def make_arg_parser():
                         nargs="?", required=True)
     parser.add_argument("--gmail_account", type=str,
                         nargs="?", required=True)
-    parser.add_argument("--to_kindle_address", type=str,
+    parser.add_argument("--to_address", type=str,
                         nargs="?", required=True)
     # optional argument
     # # glob and walk
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     PDF_PATHS = args.pdf_paths
     GMAIL_PASSWD = args.gmail_passwd
     GMAIL_ACCOUNT = args.gmail_account
-    TO_KINDLE_ADDRESS = args.to_kindle_address
+    TO_ADDRESS = args.to_address
     # optinal argument
     BCC = args.bcc
     CC = args.cc
@@ -93,7 +93,7 @@ if __name__ == "__main__":
     admin_gmail_ins.set_attachment_mimes_li()
     admin_gmail_ins.set_msg_with_attachment(
                                          GMAIL_ACCOUNT,
-                                         TO_KINDLE_ADDRESS,
+                                         TO_ADDRESS,
                                          CC, BCC,
                                          SUBJECT, BODY)
     admin_gmail_ins.send()

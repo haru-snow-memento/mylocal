@@ -62,9 +62,13 @@ class AdminBibText(object):
                             self._BibDB.get_entry_list())
 
     def _gene_key_values(self, key):
-        for bib_dict in self._bib_dicts:
-            value = bib_dict[key]
-            yield value
+        for num, bib_dict in enumerate(self._bib_dicts):
+            if key not in bib_dict:
+                mes = "{} : unknown key {}".format(num, key)
+                print(mes)
+            else:
+                value = bib_dict[key]
+                yield value
 
     def to_key_values(self, key, wpath, pids=None):
         with open(wpath, "w") as write:
