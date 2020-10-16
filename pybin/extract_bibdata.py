@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # formal lib
-from help_bibtxt import AdminBibText
+from help_bib import AdminBibText
 import argparse
 from argparse import RawTextHelpFormatter
 import os

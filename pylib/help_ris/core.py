@@ -3,26 +3,12 @@
 # formal lib
 import os
 import copy
-from bibtexparser import bparser
-from bibtexparser.bwriter import BibTexWriter
-from bibtexparser.bibdatabase import BibDatabase
-# my lib
-
-DOI_KEY = "doi"
-PAGES_KEY = "pages"
-VOLUME_KEY = "volume"
-JOURNAL_KEY = "jounal"
-AUTHER_KEY = "auther"
-ABST_KEY = "abstract"
-URL_KEY = "url"
-YEAR_KEY = "year"
-TITLE_KEY = "title"
-ENTRYTYPE_KEY = "ENTRYTYPE"
-ID_KEY = "ID"
-BIB_KEYS = [DOI_KEY, PAGES_KEY,
-            VOLUME_KEY, JOURNAL_KEY, AUTHER_KEY,
-            ABST_KEY, URL_KEY, YEAR_KEY, TITLE_KEY,
-            ENTRYTYPE_KEY, ID_KEY]
+#
+import rispy
+from RISparser.config import TAG_KEY_MAPPING
+from RISparser import readris
+from abc import ABCMeta, abstractmethod
+RIS_VALS = list(TAG_KEY_MAPPING.values())
 
 
 def fnmstr(path_str):
@@ -34,15 +20,14 @@ def fnmstr(path_str):
     return path_str
 
 
-def load_bib_to_bibDB(bib_txt):
-    fnmstr
-    with open(bib_txt, "r") as read:
-        strings = read.read()
-    bibDB = bparser.parse(strings)
-    return bibDB
+def load_entries_from_ris(ris_fpath):
+    ris_fpath = fnmstr(ris_fpath)
+    with open(ris_fpath, "r") as read:
+        entries = readris(read)
+    return entries
 
 
-def write_bibDB_to_bib(bibDB, wpath):
+def write_entries_to_ris(bibDB, wpath):
     if not isinstance(bibDB, BibDatabase):
         raise AssertionError(
                 "bibDB must be BibDatabase's instance.")
@@ -52,14 +37,16 @@ def write_bibDB_to_bib(bibDB, wpath):
         write.write(text)
 
 
-class AdminBibText(object):
-    def __init__(self, bib_path):
-        self._BibDB = load_bib_to_bibDB(bib_path)
-        self._entries_dict = self._BibDB.entries_dict
-        self._keys = list(
-                        self._entries_dict.keys())
-        self._bib_dicts = list(
-                            self._BibDB.get_entry_list())
+class AdminRISText(object, metaclass=ABCMeta):
+    def __init__(self, ris_texts):
+        self.ris_texts = ris_texts
+
+    def _gene_entries_from_ristxts(self, ris_texts):
+        for ris_text in ris_texts:
+            with oe
+
+    def load_entries_from_ris(self):
+        pass
 
     def _gene_key_values(self, key):
         for num, bib_dict in enumerate(self._bib_dicts):
