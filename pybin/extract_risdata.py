@@ -30,13 +30,30 @@ if __name__ == "__main__":
                         choices=["w", "a"])
     ex_args_grp = parser.add_mutually_exclusive_group(required=True)
     ex_args_grp.add_argument("--key", type=str, nargs="?", default=None)
-    ex_args_grp.add_argument("--")
+    ex_args_grp.add_argument("--to_ris", action="store_true",
+                             nargs="?", default=False)
+    ex_args_grp.add_argument("--to_bib", action="store_true",
+                             nargs="?", default=False)
+    ex_args_grp.add_argument("--to_dois", action="store_true",
+                             nargs="?", default=False)
     args = parser.parse_args()
     RISPATHS = args.rispaths
     OFILE = args.ofile
     PIDS = args.pids
     KEY = args.key
     MODE = args.mode
+    TO_RIS = args.to_ris
+    TO_BIB = args.to_bib
+    TO_DOIS = args.to_dois
     admin_ris = AdminRISText(RISPATHS)
-    admin_ris.write_key_values(KEY, OFILE,
-                               pids=PIDS, mode=MODE)
+    if KEY is not None:
+        admin_ris.write_key_values(KEY, OFILE,
+                                   pids=PIDS, mode=MODE)
+    elif TO_RIS:
+        admin_ris.write_ris(OFILE, pids=PIDS, mode=MODE)
+    elif TO_BIB:
+        admin_ris.write_bib(OFILE, pids=PIDS, mode=MODE)
+    elif TO_DOIS:
+        admin_ris.write_dois(OFILE, pids=PIDS, mode=MODE)
+    else:
+        raise AssertionError("")

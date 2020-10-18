@@ -8,6 +8,7 @@ from bibtexparser.bibdatabase import BibDatabase
 import rispy
 from RISparser.config import TAG_KEY_MAPPING
 from RISparser import readris
+from .global_va import DOI_KEY
 RIS_VALS = list(TAG_KEY_MAPPING.values())
 
 
@@ -74,6 +75,11 @@ class AdminRISText(object):
                     write.write(line)
                 else:
                     pass
+
+    def write_dois(self, wpath, pids=None, mode="w"):
+        self.write_key_values(DOI_KEY, wpath,
+                              pids=pids, mode=mode)
+
 
     def write_bib(self, wpath, pids=None, mode="w"):
         entries = []
