@@ -27,11 +27,11 @@ def load_entries_from_ris(ris_fpath):
     return entries
 
 
-def write_entries_to_ris(entries, wpath):
+def write_entries_to_ris(entries, wpath, mode="w"):
     if not isinstance(entries, list):
         raise AssertionError(
                 "entries must be dictionary.")
-    with open(wpath, 'w') as write:
+    with open(wpath, mode) as write:
         rispy.dump(entries, write)
 
 
@@ -61,8 +61,9 @@ class AdminRISText(object):
                 value = entry[key]
                 yield value
 
-    def to_key_values(self, key, wpath, pids=None):
-        with open(wpath, "w") as write:
+    def write_key_values(self, key, wpath,
+                         pids=None, mode="w"):
+        with open(wpath, mode) as write:
             for num, value in enumerate(
                                 self._gene_key_values(key)):
                 if pids is None:
@@ -74,7 +75,7 @@ class AdminRISText(object):
                 else:
                     pass
 
-    def to_bib(self, wpath, pids=None):
+    def write_bib(self, wpath, pids=None, mode="w"):
         entries = []
         for num, entry in enumerate(self.entries):
             if pids is None:
@@ -85,10 +86,10 @@ class AdminRISText(object):
                 raise AssertionError("")
         bibdb = BibDatabase()
         bibdb.entries = entries
-        with open(wpath, "w") as write:
+        with open(wpath, mode) as write:
             bibtexparser.dump(bibdb, write)
 
-    def to_ris(self, wpath, pids=None):
+    def write_ris(self, wpath, pids=None, mode="w"):
         entries = []
         for num, entry in enumerate(self.entries):
             if pids is None:
@@ -97,4 +98,5 @@ class AdminRISText(object):
                 entries.append(entry)
             else:
                 raise AssertionError("")
-        write_entries_to_ris(entries, wpath)
+        write_entries_to_ris(entries, wpath,
+                             mode=mode)

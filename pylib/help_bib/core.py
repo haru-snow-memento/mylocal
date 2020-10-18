@@ -34,12 +34,21 @@ def fnmstr(path_str):
     return path_str
 
 
-def load_bib_to_bibDB(bib_txt):
-    bib_txt = fnmstr(bib_txt)
-    with open(bib_txt, "r") as read:
+def load_bib_to_bibDB(bibpath):
+    bibpath = fnmstr(bibpath)
+    with open(bibpath, "r") as read:
         strings = read.read()
     bibDB = bparser.parse(strings)
     return bibDB
+
+
+def load_entries_from_bib(bibpath):
+    bibpath = fnmstr(bibpath)
+    with open(bibpath, "r") as read:
+        strings = read.read()
+    bibDB = bparser.parse(strings)
+    entries = bibDB.get_entry_list()
+    return entries
 
 
 def write_bibDB_to_bib(bibDB, wpath):
@@ -53,25 +62,26 @@ def write_bibDB_to_bib(bibDB, wpath):
 
 
 class AdminBibText(object):
-    def __init__(self, bib_path):
-        self._BibDB = load_bib_to_bibDB(bib_path)
-        self._entries_dict = self._BibDB.entries_dict
-        self._keys = list(
-                        self._entries_dict.keys())
-        self._bib_dicts = list(
-                            self._BibDB.get_entry_list())
+    def __init__(self, bib_paths):
+        self.tot_entries = []
+        for bib_path in bib_paths:
+            self._add_entries_from_bibpath(bib_path)
+
+    def _add_entries_from_bibpath(self, bibpath):
+        tmp_entries = load_entries_from_bib(bibpath)
+        self.tot_entries.extend(tmp_entries)
 
     def _gene_key_values(self, key):
-        for num, bib_dict in enumerate(self._bib_dicts):
-            if key not in bib_dict:
+        for num, entry_dict in enumerate(self.tot_entries):
+            if key not in entry_dict:
                 mes = "{} : unknown key {}".format(num, key)
                 print(mes)
             else:
-                value = bib_dict[key]
+                value = entry_dict[key]
                 yield value
 
-    def to_key_values(self, key, wpath, pids=None):
-        with open(wpath, "w") as write:
+    def write_key_values(self, key, wpath, pids=None, mode="w"):
+        with open(wpath, mode) as write:
             for num, value in enumerate(
                                 self._gene_key_values(key)):
                 if pids is None:
@@ -83,44 +93,48 @@ class AdminBibText(object):
                 else:
                     pass
 
-    def to_dois(self, wpath, pids=None):
-        self.to_key_values(DOI_KEY, wpath,
-                           pids=pids)
+    def write_dois(self, wpath, pids=None, mode="w"):
+        self.write_key_values(DOI_KEY, wpath,
+                              pids=pids, mode=mode)
 
-    def to_pages(self, wpath, pids=None):
-        self.to_key_values(PAGES_KEY, wpath,
-                           pids=pids)
+    def write_pages(self, wpath, pids=None, mode="w"):
+        self.write_key_values(
+                        PAGES_KEY, wpath,
+                        pids=pids, mode=mode)
 
-    def to_volumes(self, wpath, pids=None):
-        self.to_key_values(VOLUME_KEY,
-                           wpath, pids=pids)
+    def write_volumes(self, wpath, pids=None, mode="w"):
+        self.write_key_values(VOLUME_KEY,
+                              wpath, pids=pids,
+                              mode=mode)
 
-    def to_journals(self, wpath, pids=None):
-        self.to_key_values(
-                    JOURNAL_KEY, wpath,
-                    pids=pids)
+    def write_journals(self, wpath, pids=None, mode="w"):
+        self.write_key_values(
+                        JOURNAL_KEY, wpath,
+                        pids=pids, mode=mode)
 
-    def to_authers(self, wpath, pids=None):
-        self.to_key_values(AUTHER_KEY, wpath,
-                           pids=pids)
+    def write_authers(self, wpath, pids=None, mode="w"):
+        self.write_key_values(
+                        AUTHER_KEY, wpath,
+                        pids=pids, mode=mode)
 
-    def to_abstructs(self, wpath,
-                     pids=None):
-        self.to_key_values(ABST_KEY, wpath,
-                           pids=pids)
+    def write_abstructs(self, wpath,
+                        pids=None, mode="w"):
+        self.write_key_values(
+                        ABST_KEY, wpath,
+                        pids=pids, mode=mode)
 
     def make_bibtexts(self, pids=None):
         new_bibdata = BibDatabase()
         entries_list = []
         if pids is None:
-            entries_list = copy.deepcopy(self._bib_dicts)
+            entries_list = copy.deepcopy(self.tot_entries)
         else:
-            for num, entry_dict in enumerate(self._bib_dicts):
+            for num, entry_dict in enumerate(self.tot_entries):
                 if num in pids:
                     entries_list.append(entry_dict)
         new_bibdata.entries = entries_list
         return new_bibdata
 
-    def to_bib(self, wpath, pids=None):
+    def write_bib(self, wpath, pids=None):
         new_bibdata = self.make_bibtexts(pids=pids)
         write_bibDB_to_bib(new_bibdata, wpath)
