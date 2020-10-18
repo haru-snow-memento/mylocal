@@ -8,7 +8,7 @@ from bibtexparser.bibdatabase import BibDatabase
 import rispy
 from RISparser.config import TAG_KEY_MAPPING
 from RISparser import readris
-from .global_va import DOI_KEY
+DOI_KEY = "doi"
 RIS_VALS = list(TAG_KEY_MAPPING.values())
 
 
