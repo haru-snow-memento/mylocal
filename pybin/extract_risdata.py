@@ -31,11 +31,11 @@ if __name__ == "__main__":
     ex_args_grp = parser.add_mutually_exclusive_group(required=True)
     ex_args_grp.add_argument("--key", type=str, nargs="?", default=None)
     ex_args_grp.add_argument("--to_ris", action="store_true",
-                             nargs="?", default=False)
+                             default=False)
     ex_args_grp.add_argument("--to_bib", action="store_true",
-                             nargs="?", default=False)
+                             default=False)
     ex_args_grp.add_argument("--to_dois", action="store_true",
-                             nargs="?", default=False)
+                             default=False)
     args = parser.parse_args()
     RISPATHS = args.rispaths
     OFILE = args.ofile
