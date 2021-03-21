@@ -123,7 +123,7 @@ class AdminBibText(object):
                         ABST_KEY, wpath,
                         pids=pids, mode=mode)
 
-    def make_bibtexts(self, pids=None):
+    def make_bibdata(self, pids=None):
         new_bibdata = BibDatabase()
         entries_list = []
         if pids is None:
